@@ -106,7 +106,7 @@ result.push(properties)
     <textarea placeholder="Add CSV text here" bind:value={data}></textarea>
     <div class="buttons">
         <button on:click={getRows}>Update Table</button>
-        <button on:click={() => data = []}>Clear Data</button>
+        <button class="clear" on:click={() => data = []}>Clear Data</button>
     </div>
 </main>
 
@@ -277,5 +277,30 @@ select {
 }
 .sample-link:hover { 
     color: indianred;
+}
+.buttons { 
+    margin-top: 10px;
+}
+button {
+     background: dodgerblue;
+     color: #fff;
+     padding: 10px 20px;
+     border: none;
+     border-radius: 5px;
+     text-transform: uppercase;
+     font-weight: 700;
+     cursor: pointer;
+     font-size: 0.7rem;
+     margin-right: 10px;
+}
+button:hover { 
+    background:rgb(12, 113, 215);
+}
+.clear { 
+    background: lightgray;
+    color: #000;
+}
+.clear:hover { 
+  background: rgb(181, 181, 181);  
 }
 </style>
