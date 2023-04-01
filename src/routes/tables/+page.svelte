@@ -1,4 +1,19 @@
 <script>
+    let sampleData = `University,Stage3,Stage4,Stage5,Stage 6
+CPUT,"R30,500","R44,650","R56,400","R82,250"
+UCT,"R98,510","R131,346","R164,183","R197,019"
+DUT,"R5,870","R7,044","R11,741","R16,437"
+UFS,"R7,747","R15,494","R20,659","R25,824"
+UJ,"R178,494","R535,483","R713,978","R892,473"
+NMU,"R75,600","R100,800","R108,360","R115,920"
+NWU,"R196,800","R295,200","R392,600","R492,000"
+UP,"R1,200,933","R1,501,167","R1,801,400","R2,201,711"
+Sefako Makgatho University,"R1,233","R1,513","R2,104","R2,603"
+Sol Plaatje University,"R3,880","R7,276","R7,276","R8,731"
+Stellenbosch University,"R194,221","R234,576","R288,473","R342,739"
+TUT,"R26,250","R39,375","R42,000","R42,000"
+UWC,"R21,871","R33,333","R41,667","R49,911"`
+
     // default config
     let tableWidth = 600
     let headerColor = '#BC302F'
@@ -6,47 +21,36 @@
 
     let columns = []
 
-    $: console.log(columns)
-
     // options
     let colors = ["#91BFDB","#4575B4","#609E79","#E0F3F8","#FEE090","#FC8D59","#BE3131","#7A7A7A","#D3D3D3","#FFFFFF","#000000","#D9D9D9"]
     
-
-
     let data = ""
-
-    let outputdata = null
+    let outputdata = []
     let headers = ""
     let body = ""
 
-    $: outputdata = data.split('\n')
-    $: headers = outputdata[0].split(',')
-    $: body = outputdata.slice(1)
-    $: if(body) { 
-        getRows()
-    }
-
     let result = []
-   
 
     function getRows() { 
-        console.log('Running getRows');
 
-        console.log(body)
-        
+        outputdata = []  
+        headers = []    
+        result = []  
+ 
+        outputdata = data.split('\n')
+        headers = outputdata[0].split(',')
+        headers.forEach((d,i) => { 
+            columns[i] = { name: d, align: 'left' }
+         })
+        body = outputdata.slice(1)
+
         body.forEach(b => { 
         let obj = {}
 
-        console.log(b)
-        
- 
-       
         let str = b
         let s = ''
 
-        console.log(str);
-        
- 
+
   // By Default, we get the comma separated
   // values of a cell in quotes " " so we
   // use flag to keep track of quotes and
@@ -65,46 +69,31 @@
     if (ch === ',' && flag === 0) ch = '|'
     if (ch !== '"') s += ch
   }
- console.log(s)
+
  
   // Split the string using pipe delimiter |
   // and store the values in a properties array
   let properties = s.split("|")
 
 result.push(properties)
-  
- 
-  // For each header, if the value contains
-  // multiple comma separated data, then we
-  // store it in the form of array otherwise
-  // directly the value is stored
-//   for (let j in headers) {
-//     if (properties[j].includes(", ")) {
-//       obj[headers[j]] = properties[j]
-//         .split(", ").map(item => item.trim())
-//     }
-//     else obj[headers[j]] = properties[j]
-//   }
- 
-  // Add the generated object to our
-  // result array
-//   result.push(zobj)
 })
 
- console.log(result);
+
  
     }
 
    
 
-    $: headers.forEach((d,i) => { 
-        columns[i] = { name: d, align: 'left' }
-    })
+    
     
     
     function handleAlignChange(event, column) {
     column.align = event.target.value;
     columns = [...columns];
+  }
+
+  function addSampleData() { 
+    data = sampleData
   }
     
 </script>
@@ -113,8 +102,12 @@ result.push(properties)
 
 <main>
     <h1>Table Maker</h1>
-    
+    <div class="example">Try some <span class="sample-link" on:click={addSampleData}>Sample Data</span></div>
     <textarea placeholder="Add CSV text here" bind:value={data}></textarea>
+    <div class="buttons">
+        <button on:click={getRows}>Update Table</button>
+        <button on:click={() => data = []}>Clear Data</button>
+    </div>
 </main>
 
 <div class="settings">
@@ -142,32 +135,12 @@ result.push(properties)
             </select>
         </div>
 
-
-
-        <!-- <div class="settings-row settings-row-top">
-            <div class="color-label">Columns</div>
-            {#each columns as c}
-                <div class="color-label">{c.name}</div>
-                <select bind:value={c.align}>
-                    <option value="left">left</option>
-                    <option value="right">right</option>
-                    <option value="center">center</option>
-                </select>
-            {/each}
-        </div> -->
-
-
-
-        
-
     </div>
 </div>
 
 <div class="result" style="width: {tableWidth}px;">
     {#if outputdata.length > 2}
 
-   
-    
         <div class="source">
            <table>
 
@@ -208,7 +181,6 @@ result.push(properties)
     {/if}
 </div>
 <div class="bottom"></div>
-
 
 <style>
     main { 
@@ -292,5 +264,18 @@ result.push(properties)
 
 select { 
     padding: 5px;
+}
+
+.example { 
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+.sample-link { 
+    color: dodgerblue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.sample-link:hover { 
+    color: indianred;
 }
 </style>
