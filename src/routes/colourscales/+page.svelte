@@ -1,4 +1,5 @@
 <script>
+   import { Info } from 'lucide-svelte';
     let start = 0
     let end = 1000
     let palette
@@ -48,18 +49,15 @@
         <input type="text" bind:value={end} /><button on:click={minMax}
           >Set Min-Max
         </button>
-        <div class="info">
+        <!-- svelte-ignore a11y-mouse-events-have-key-events -->
+        <div class="info" on:mouseover={() => {
+          infoMinMax = !infoMinMax
+        }}
+        on:mouseout={() => {
+          infoMinMax = !infoMinMax
+        }}>
           <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-          <img
-            src="./assets/icons/info.svg"
-            alt="info"
-            on:mouseover={() => {
-              infoMinMax = !infoMinMax
-            }}
-            on:mouseout={() => {
-              infoMinMax = !infoMinMax
-            }}
-          />
+      <Info />
         </div>
         {#if infoMinMax}
           <div class="description">
@@ -76,18 +74,15 @@
           class="values values-long"
           bind:value={values}
         />
-        <div class="info">
+        <!-- svelte-ignore a11y-mouse-events-have-key-events -->
+        <div class="info" on:mouseover={() => {
+          infoRange = !infoRange
+        }}
+        on:mouseout={() => {
+          infoRange = !infoRange
+        }}>
           <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-          <img
-            src="./assets/icons/info.svg"
-            alt="info"
-            on:mouseover={() => {
-              infoRange = !infoRange
-            }}
-            on:mouseout={() => {
-              infoRange = !infoRange
-            }}
-          />
+          <Info />
         </div>
         {#if infoRange}
           <div class="description">
