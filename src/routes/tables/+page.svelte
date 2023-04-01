@@ -109,6 +109,7 @@ result.push(properties)
     
 </script>
 
+<svelte:head><title>Table Maker</title></svelte:head>
 
 <main>
     <h1>Table Maker</h1>

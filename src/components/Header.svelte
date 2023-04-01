@@ -1,5 +1,7 @@
 <header>
-    <div class="logo"><a href="/" class="logo">Media Hack Tools<a ></div><div><a href="/tables">Table Maker</a></div>
+    <div class="logo"><a href="/" class="logo">Media Hack Tools</a></div>
+    <div><a href="/tables">Table Maker</a></div>
+    <div><a href="/colourscales">Colour Scales</a></div>
 </header>
 
 <style>
