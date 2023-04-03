@@ -7,5 +7,5 @@
 <Header />
 <main>
     <slot />
-
 </main>
+

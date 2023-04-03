@@ -10,11 +10,38 @@
     let inputValues = []
     $: scale = chroma.scale(palette).domain([start, end])
     import { colors } from './colors.js'
+    let string  = ''
   
     import ColorPalettes from './ColorPalettes.svelte'
   
     $: inputValues = inputValues
     $: convertValues(values)
+    $: if(inputValues) { 
+      string = ''
+      inputValues.forEach(d => { 
+        string = string + scale(d) + ','
+      })
+      string = string.replace(/,\s*$/, "");
+      string = `[${string}]`
+      
+    }
+    $: if(palette) { 
+      string = ''
+      convertValues(values)
+      inputValues.forEach(d => { 
+        string = string + scale(d) + ','
+      })
+      string = string.replace(/,\s*$/, "");
+      string = `[${string}]`
+      
+    }
+
+    // $: if(inputValues) { 
+    //   inputValues.forEach(d => { 
+    //     console.log(scale(d));
+        
+    //   })
+    // }
   
     function convertValues(values) {
       let v = values.replaceAll(' ', '')
@@ -31,6 +58,10 @@
   
     let infoRange = false
     let infoMinMax = false
+
+    function calculateColor(value) { 
+      return scale(value)
+    }
   </script>
   
 
@@ -39,59 +70,37 @@
   <main>
     <h1>ColourScales</h1>
     <div class="intro">
-      A utility tool for generating colours based on a range of numbers. Replace
-      the values in the "Number Range" with your selected numbers and add a
-      minimum or maximum value for your range.
+      A simple tool for generating a collection of colours based on a collection of numbers.<br/>
+     
     </div>
     <div class="input-wrap">
+     
       <div class="input-row">
-        Start Value: <input type="text" bind:value={start} /> &nbsp; End Value:
-        <input type="text" bind:value={end} /><button on:click={minMax}
+        <div class="section-title">Range</div>
+        <div class="instructions">Set a minimum and maximum for your collection of numbers <strong>OR</strong> click the button to set the min/max automatically from your numbers in the "NUmbers" section   </div>
+        <span class="label">Minimum:</span> <input class="input-small" type="text" bind:value={start} /> &nbsp; <span class="label">Maximum:</span>
+        <input  class="input-small" type="text" bind:value={end} /><button on:click={minMax}
           >Set Min-Max
         </button>
         <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-        <div class="info" on:mouseover={() => {
-          infoMinMax = !infoMinMax
-        }}
-        on:mouseout={() => {
-          infoMinMax = !infoMinMax
-        }}>
-          <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-      <Info />
-        </div>
-        {#if infoMinMax}
-          <div class="description">
-            <div>
-              You can either provide starting/ending values here, or you can
-              calculate them automatically based on the numbers added below.
-            </div>
-          </div>
-        {/if}
+       
+      
       </div>
       <div class="input-row">
-        Number Range: <input
+        <div class="section-title">Numbers</div>
+        <div class="instructions">Add as many numbers as you want colours. A colour will be created for each number based on the range and palette you choose. Separate numbers with commas.</div>
+        <span class="label">Numbers:</span> <input
           type="text"
-          class="values values-long"
+          class="values values-long input-wide"
           bind:value={values}
         />
         <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-        <div class="info" on:mouseover={() => {
-          infoRange = !infoRange
-        }}
-        on:mouseout={() => {
-          infoRange = !infoRange
-        }}>
-          <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-          <Info />
-        </div>
-        {#if infoRange}
-          <div class="description">
-            <div>Add a list of comma-separated numbers here.</div>
-          </div>
-        {/if}
+       
+        
       </div>
       <div class="input-row">
-        Choose Palette:
+        <div class="section-title">Palette</div>
+        <div class="instructions">Select a palette from the list below. </div>
         <select bind:value={palette}>
           {#each colors as c}
             <option>{c}</option>
@@ -103,10 +112,17 @@
           <div class="box-wrap">
             <div class="box" style="background: {scale(c)};" />
             <div class="label">{c}</div>
-            <div class="label">{scale(c)}</div>
+            <div class="label">{calculateColor(c)}</div>
           </div>
         {/each}
       </div>
+   
+
+      <div class="array">
+        {string}
+      </div>
+
+
     </div>
   
     <ColorPalettes {palette} />
@@ -122,9 +138,18 @@
     .input-row {
       position: relative;
       margin: 10px 0px;
-      padding: 20px 10px;
+      padding: 5px 20px;
       border: dotted 1px lightgray;
       /* background: #eee; */
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-top: solid 1px gray;
+    }
+    .input-wrap { 
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+     
     }
     .description {
       position: absolute;
@@ -165,7 +190,43 @@
     }
     .label {
       font-size: 0.8rem;
-      text-align: center;
+      padding: 0px 10px 0px 0px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    input, button, select { 
+      padding: 7px;
+      margin-left: 5px; 
+      margin-right: 5px;
+    }
+    button { 
+      cursor: pointer;
+    }
+    .input-small { 
+      width: 50px;
+    }
+    .input-wide { 
+      width: 300px;
+    }
+    .instructions { 
+      padding-top: 10px; 
+      padding-bottom: 20px;
+      font-style: italic;
+      color: gray;
+    }
+    .section-title { 
+      text-transform: uppercase;
+      font-weight: 700; 
+      margin-top: 10px;
+      font-size: 1.2rem;
+
+    }
+    .color-palettes { 
+      padding-bottom: 100px;
+    }
+    .array { 
+      margin-top: 20px;
     }
   </style>
   
