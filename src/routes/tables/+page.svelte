@@ -1,4 +1,6 @@
 <script>
+    let source = ""
+    import outlierlogo from '$assets/outlierlogo.png'
     let sampleData = `University,Stage3,Stage4,Stage5,Stage 6
 CPUT,"R30,500","R44,650","R56,400","R82,250"
 UCT,"R98,510","R131,346","R164,183","R197,019"
@@ -104,6 +106,7 @@ result.push(properties)
     <h1>Table Maker</h1>
     <div class="example">Try some <span class="sample-link" on:click={addSampleData}>Sample Data</span></div>
     <textarea placeholder="Add CSV text here" bind:value={data}></textarea>
+    <div class="sources"><span class="label">Source:</span > <input type="text" bind:value={source}></div>
     <div class="buttons">
         <button on:click={getRows}>Update Table</button>
         <button class="clear" on:click={() => data = []}>Clear Data</button>
@@ -175,6 +178,17 @@ result.push(properties)
                         </tr>
                     {/each}
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="footer source" colspan="{Math.ceil(columns.length/2)}">
+                        {#if source.length > 0}
+                        Source: {source}
+                        {/if}
+                        </td>
+                        <td class="footer logo" colspan="{Math.floor(columns.length/2)}">
+                        <img src="{outlierlogo}"></td>
+                    </tr>
+                </tfoot>
            </table>
         </div>
     
@@ -214,10 +228,13 @@ result.push(properties)
         border: 1px solid #ddd;
         text-align: left;
         border: solid 1px #fff;
+        
     }
     td { 
+        color: #000;
         padding: 5px;
         border: solid 1px #eee;
+        font-size: 0.8rem;
     }
     .settings { 
         margin-bottom: 30px;
@@ -303,4 +320,31 @@ button:hover {
 .clear:hover { 
   background: rgb(181, 181, 181);  
 }
+.footer { 
+    
+    border: none;
+}
+.footer img { 
+    max-width: 100%;
+}
+.logo { 
+    text-align: right;
+}
+.source { 
+    color: rgb(148, 148, 148);
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+}
+input { 
+    padding: 5px;
+    border: solid 1px lightgray;
+    width: 400px;
+    
+}
+.label { 
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
 </style>
