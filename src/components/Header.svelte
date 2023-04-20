@@ -2,6 +2,7 @@
     <div class="logo"><a href="/" class="logo">Media Hack Tools</a></div>
     <div><a href="/tables">Table Maker</a></div>
     <div><a href="/colourscales">Colour Scales</a></div>
+    <div><a href="/meta-check">Meta Check</a></div>
 </header>
 
 <style>

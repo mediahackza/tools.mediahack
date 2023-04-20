@@ -1,4 +1,25 @@
 <script>
+    function formatHTML(html) {
+    var tab = '\t';
+    var result = '';
+    var indent= '';
+
+    html.split(/>\s*</).forEach(function(element) {
+        if (element.match( /^\/\w/ )) {
+            indent = indent.substring(tab.length);
+        }
+
+        result += indent + '<' + element + '>\r\n';
+
+        if (element.match( /^<?\w[^>]*[^\/]$/ ) && !element.startsWith("input")  ) { 
+            indent += tab;              
+        }
+    });
+
+    return result.substring(1, result.length-3);
+}
+
+    let tableCode = ''
     let source = ""
     import outlierlogo from '$assets/outlierlogo.png'
     let sampleData = `University,Stage3,Stage4,Stage5,Stage 6
@@ -97,6 +118,10 @@ result.push(properties)
   function addSampleData() { 
     data = sampleData
   }
+
+  setInterval(() => { 
+    tableCode = formatHTML(document.getElementById('table').innerHTML)
+  }, 1000)
     
 </script>
 
@@ -145,13 +170,12 @@ result.push(properties)
     {#if outputdata.length > 2}
 
         <div class="source">
-           <table>
+           <table id="table">
 
            <thead>
                 <tr class="options">
                     {#each columns as column}
                     <td>
-                      <!-- <span>{column.title}</span> -->
                       <select value={column.align} on:change={(e) => handleAlignChange(e, column)}>
                         <option value="left">Left</option>
                         <option value="center">Center</option>
@@ -173,7 +197,6 @@ result.push(properties)
                         <tr>
                             {#each r as cell, i}
                                 <td style="text-align: {columns[i].align};">{cell}</td>
-                                <!-- <td>{cell}</td> -->
                             {/each}
                         </tr>
                     {/each}
@@ -193,16 +216,23 @@ result.push(properties)
         </div>
     
     {/if}
+
+    <div>
+        <div id="fake_textarea" contenteditable><pre>{tableCode}</pre></div>
+    </div>
 </div>
+
+
 <div class="bottom"></div>
 
 <style>
     main { 
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        width: 600px; 
+        width: 700px; 
         margin-left: auto;
         margin-right: auto;
         padding-bottom: 100px;
+        margin-top: 50px;
     }
     textarea { 
         width: 100%;
