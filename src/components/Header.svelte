@@ -3,6 +3,7 @@
     <div><a href="/tables">Table Maker</a></div>
     <div><a href="/colourscales">Colour Scales</a></div>
     <div><a href="/meta-check">Meta Check</a></div>
+    <div><a href="/scalecalculator">Scale Calculator</a></div>
     <div><a href="/image-calculator">Image Calculator</a></div>
 </header>
 
