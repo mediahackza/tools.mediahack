@@ -1,4 +1,5 @@
 <script>
+    let log = true
     let inputMin = null 
     let inputMax = null
     let outputMin = null
@@ -8,10 +9,18 @@
     let result = 0
 
     function convert() { 
-        let scale = d3.scaleLinear()
+        if(log) {
+        let scale = d3.scaleLog()
             .domain([inputMin, inputMax])
             .range([outputMin, outputMax])
-        result = scale(inputValue)
+            result = scale(inputValue)
+        }
+        else { 
+            let scale = d3.scaleLinear()
+            .domain([inputMin, inputMax])
+            .range([outputMin, outputMax])
+            result = scale(inputValue)
+        }
     }
 </script>
 
@@ -34,7 +43,9 @@
    </div>
     <div class="row">Convert value: <input type="text" bind:value={inputValue}></div>
     <br/>
-    <button on:click={convert}>Convert</button>
+    <button on:click={convert}>Convert</button><span>
+        <input type="checkbox" bind:checked={log}> Log: { log}
+    </span>
     <p>
         {result}
     </p>

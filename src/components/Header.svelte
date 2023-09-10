@@ -5,6 +5,7 @@
     <div><a href="/meta-check">Meta Check</a></div>
     <div><a href="/scalecalculator">Scale Calculator</a></div>
     <div><a href="/image-calculator">Image Calculator</a></div>
+    <div><a href="/maptools">Map Tools</a></div>
 </header>
 
 <style>
